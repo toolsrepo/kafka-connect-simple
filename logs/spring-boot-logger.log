@@ -1,0 +1,1 @@
+2020-07-30 00:26:29,053 INFO com.nathd.kafka.source.GitHubSourceConnectorConfigTest [main] Errors=[Missing required configuration "github.owner" which has no default value., Missing required configuration "topic" which has no default value., Missing required configuration "github.repo" which has no default value.]
