@@ -1,7 +1,12 @@
 package com.nathd.kafka.connect.source.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nathd.kafka.connect.source.GitHubSourceConnectorConfig;
+import com.nathd.kafka.connect.source.model.Issue;
+import com.nathd.kafka.connect.util.JacksonConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.connect.errors.ConnectException;
 
@@ -10,6 +15,7 @@ import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 @Slf4j
 public class GitHubConnectorApi {
@@ -21,13 +27,15 @@ public class GitHubConnectorApi {
 
     private GitHubSourceConnectorConfig config;
     private RestClient restClient;
+    private ObjectMapper objectMapper;
 
     public GitHubConnectorApi(GitHubSourceConnectorConfig config) {
         this.config = config;
         this.restClient = new RestClient(config.getAuthUsernameConfig(), config.getAuthPasswordConfig());
+        this.objectMapper = JacksonConfiguration.objectMapper();
     }
 
-    public JsonNode getNextIssues(Integer page, Instant since) throws InterruptedException {
+    public List<Issue> getNextIssues(Integer page, Instant since) throws InterruptedException, JsonProcessingException {
         Response jsonResponse;
 
         jsonResponse = getNextIssuesAPI(page, since);
@@ -39,7 +47,9 @@ public class GitHubConnectorApi {
 
         switch (jsonResponse.getStatus()) {
             case 200:
-                return jsonResponse.readEntity(JsonNode.class);
+                return objectMapper.readValue(jsonResponse.readEntity(String.class),
+                        new TypeReference<List<Issue>>() {
+                        });
             case 403:
                 // we have issues too many requests.
                 log.info(jsonResponse.readEntity(JsonNode.class).get("message").asText());
@@ -65,7 +75,7 @@ public class GitHubConnectorApi {
         }
     }
 
-    protected Response getNextIssuesAPI(Integer page, Instant since) {
+    public Response getNextIssuesAPI(Integer page, Instant since) {
         return restClient.getData(constructUrl(page, since));
     }
 

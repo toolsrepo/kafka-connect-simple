@@ -1,16 +1,18 @@
 package com.nathd.kafka.connect.source.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nathd.kafka.connect.source.GitHubSourceConnectorConfig;
+import com.nathd.kafka.connect.source.model.Issue;
 import com.nathd.kafka.connect.util.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class GitHubConnectorApiTest extends BaseTest {
 
@@ -24,9 +26,9 @@ public class GitHubConnectorApiTest extends BaseTest {
     }
 
     @Test
-    public void testGetIssuesAPI() throws InterruptedException {
-        JsonNode node = this.api.getNextIssues(0, ZonedDateTime.now().minusYears(2).toInstant());
-        assertNotNull(node);
+    public void testGetIssuesAPI() throws InterruptedException, JsonProcessingException {
+        List<Issue> node = this.api.getNextIssues(0, ZonedDateTime.now().minusYears(2).toInstant());
+        assertTrue(node.size() > 0);
     }
 
     private Map<String, String> initialConfig() {

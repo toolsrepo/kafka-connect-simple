@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @RunWith(JUnit4ClassRunner.class)
-public class BaseTest {
+public abstract class BaseTest {
 
     private static final ObjectMapper objectMapper = JacksonConfiguration.objectMapper();
 
