@@ -1,6 +1,5 @@
 package com.nathd.kafka.connect.source.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +11,7 @@ import org.apache.kafka.connect.errors.ConnectException;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -35,7 +35,7 @@ public class GitHubConnectorApi {
         this.objectMapper = JacksonConfiguration.objectMapper();
     }
 
-    public List<Issue> getNextIssues(Integer page, Instant since) throws InterruptedException, JsonProcessingException {
+    public List<Issue> getNextIssues(Integer page, Instant since) throws InterruptedException, IOException {
         Response jsonResponse;
 
         jsonResponse = getNextIssuesAPI(page, since);

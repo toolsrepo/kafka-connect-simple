@@ -1,6 +1,5 @@
 package com.nathd.kafka.connect.source;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nathd.kafka.connect.source.api.GitHubConnectorApi;
@@ -10,6 +9,7 @@ import org.junit.Test;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +36,7 @@ public class GitHubSourceTaskTest {
   }
 
   @Test
-  public void testTask() throws JsonProcessingException {
+  public void testTask() throws IOException {
     Integer pageToVisit = 1;
     Instant nextQuerySince = Instant.parse("2018-01-01T00:00:00Z");
     sourceTask.config = new GitHubSourceConnectorConfig(initialConfig());

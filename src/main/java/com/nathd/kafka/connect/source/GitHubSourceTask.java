@@ -1,6 +1,5 @@
 package com.nathd.kafka.connect.source;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nathd.kafka.connect.VersionUtil;
 import com.nathd.kafka.connect.source.api.GitHubConnectorApi;
 import com.nathd.kafka.connect.source.model.Issue;
@@ -12,6 +11,7 @@ import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 
@@ -80,7 +80,7 @@ public class GitHubSourceTask extends SourceTask {
                 nextPageToVisit = 1;
                 gitHubConnectorApi.sleep();
             }
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             log.error("Error while getting Next Issues:" + e.getMessage(), e);
         }
         return sourceRecords;
@@ -131,9 +131,7 @@ public class GitHubSourceTask extends SourceTask {
                     .put(PR_HTML_URL_FIELD, pullRequest.getHtmlUrl());
             valueStruct.put(PR_FIELD, prStruct);
         }
-
         return valueStruct;
-
     }
 
     private Map<String, String> sourcePartition() {
