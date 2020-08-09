@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.Map;
 
-public class MySinkTask extends SinkTask {
-  private static Logger log = LoggerFactory.getLogger(MySinkTask.class);
+public class ElasticSinkTask extends SinkTask {
+  private static Logger log = LoggerFactory.getLogger(ElasticSinkTask.class);
 
   @Override
   public String version() {

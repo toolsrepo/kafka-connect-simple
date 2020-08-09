@@ -10,9 +10,9 @@ import org.apache.kafka.connect.sink.SinkConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MySinkConnector extends SinkConnector {
-  private static Logger log = LoggerFactory.getLogger(MySinkConnector.class);
-  private MySinkConnectorConfig config;
+public class ElasticSinkConnector extends SinkConnector {
+  private static Logger log = LoggerFactory.getLogger(ElasticSinkConnector.class);
+  private ElasticSinkConnectorConfig config;
 
   @Override
   public String version() {
@@ -21,7 +21,7 @@ public class MySinkConnector extends SinkConnector {
 
   @Override
   public void start(Map<String, String> map) {
-    config = new MySinkConnectorConfig(map);
+    config = new ElasticSinkConnectorConfig(map);
 
     //TODO: Add things you need to do to setup your connector.
 
@@ -34,7 +34,7 @@ public class MySinkConnector extends SinkConnector {
   @Override
   public Class<? extends Task> taskClass() {
     //TODO: Return your task implementation.
-    return MySinkTask.class;
+    return ElasticSinkTask.class;
   }
 
   @Override
@@ -55,6 +55,6 @@ public class MySinkConnector extends SinkConnector {
 
   @Override
   public ConfigDef config() {
-    return MySinkConnectorConfig.conf();
+    return ElasticSinkConnectorConfig.conf();
   }
 }
